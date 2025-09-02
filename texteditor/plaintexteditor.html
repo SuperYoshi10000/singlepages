@@ -2,20 +2,24 @@
 <button id="save">Save</button>
 <button id="load">Load</button>
 <!-- <a style="float: right; padding-right: 5px;" href="command.html">Close</a> -->
-<textarea id="textareastuff"></textarea>
+<textarea id="text"></textarea>
 <script>
-    var save = document.getElementById("save");
-    var load = document.getElementById("load");
+    const save = document.getElementById("save");
+    const load = document.getElementById("load");
+    const textarea = document.getElementById("text")l=;
+
+    var filename
+    
     save.addEventListener("click", async e => {
         if (window.navigator.msSaveOrOpenBlob) window.navigator.msSaveOrOpenBlob(file, filename);
         else {
-            var text = document.getElementById("textareastuff").value;
-            var filename = prompt("Enter filename", "text.txt");
+            const text = textarea.value;
+            const filename = prompt("Enter filename", "text.txt");
             if (filename === null) return;
-            var file = new File([text], filename, {type: "text/plain"});
-            var a = document.createElement("a");
+            const file = new File([text], filename, {type: "text/plain"});
+            const a = document.createElement("a");
             a.style.display = "none";
-            var url = URL.createObjectURL(file);
+            const url = URL.createObjectURL(file);
             a.href = url;
             a.download = filename;
             document.body.appendChild(a);
@@ -27,17 +31,17 @@
         }
     });
     load.addEventListener("click", async e => {
-        var i = document.createElement("input");
+        const i = document.createElement("input");
         i.type = "file";
         i.style.display = "none";
         document.body.appendChild(i);
         i.click();
         i.addEventListener("change", async e => {
-            var file = i.files[0];
-            var reader = new FileReader();
+            const file = i.files[0];
+            const reader = new FileReader();
             reader.onload = function(e) {
-                var text = e.target.result;
-                document.getElementById("textareastuff").value = text;
+                const text = e.target.result;
+                textarea.value = text;
                 document.body.removeChild(i);
             };
             reader.readAsText(file);
@@ -50,9 +54,9 @@
         } else if (e.keyCode === 79 && e.ctrlKey) {
             e.preventDefault();
             load.click();
-        } else if (e.keyCode === 81 && e.ctrlKey) {
+        } else if (e.keyCode === 9 && e.ctrlKey) {
             e.preventDefault();
-            document.querySelector("a").click();
+            
         }
     });
 </script>
