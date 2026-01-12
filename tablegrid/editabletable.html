@@ -37,17 +37,10 @@
           r.append(c);
         }
         b.append(r);
-        let a = document.createElement('button');
-        a.innerText = '+';
-        a.addEventListener('click', () => {
-          let c = document.createElement('td');
-          c.contentEditable = true;
-          a.before(c);
-        });
-        r.append(a);
       }
+      
       let n = ducument.createElement('button');
-      n.innerText = '+';
+      n.innerText = '+ row';
       n.addEventListener('click', () => {
         let r = document.createElement('tr');
         for (let x = 0; x < w; x++) {
@@ -55,10 +48,20 @@
           c.contentEditable = true;
           r.append(c);
         }
-        n.before(r);
-        document.body.append(n)
+        b.append(r);
       });
-      b.append(n);
+      document.body.append(n);
+
+      let a = document.createElement('button');
+      a.innerText = '+ col';
+      a.addEventListener('click', () => {
+        Array.from(b.children).forEach(r => {
+          let c = document.createElement('td');
+          c.contentEditable = true;
+          r.append(c);
+        });
+      });
+      document.body.append(a);
     </script>
   </body>
 </html>
