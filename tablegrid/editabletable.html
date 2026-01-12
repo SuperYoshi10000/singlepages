@@ -45,9 +45,9 @@
         b.append(r);
       }
       
-      let n = document.createElement('button');
-      n.innerText = '+ row';
-      n.addEventListener('click', () => {
+      let ar = document.createElement('button');
+      ar.innerText = '+ row';
+      ar.addEventListener('click', () => {
         let r = document.createElement('tr');
         for (let x = 0; x < w; x++) {
           let c = document.createElement('td');
@@ -57,11 +57,11 @@
         b.append(r);
         h++;
       });
-      document.body.append(n);
+      document.body.append(ar);
 
-      let a = document.createElement('button');
-      a.innerText = '+ col';
-      a.addEventListener('click', () => {
+      let ac = document.createElement('button');
+      ac.innerText = '+ col';
+      ac.addEventListener('click', () => {
         Array.from(b.children).forEach(r => {
           let c = document.createElement('td');
           c.contentEditable = true;
@@ -69,23 +69,23 @@
         });
         w++;
       });
-      document.body.append(a);
+      document.body.append(ac);
 
-      let n = document.createElement('button');
-      n.innerText = '- row';
-      n.addEventListener('click', () => {
+      let rr = document.createElement('button');
+      rr.innerText = '- row';
+      rr.addEventListener('click', () => {
         b.lastChild.remove();
         h--;
       });
-      document.body.append(n);
+      document.body.append(rr);
 
-      let a = document.createElement('button');
-      a.innerText = '- col';
-      a.addEventListener('click', () => {
+      let rc = document.createElement('button');
+      rc.innerText = '- col';
+      rc.addEventListener('click', () => {
         Array.from(b.children).forEach(r => r.lastChild.remove());
         w--;
       });
-      document.body.append(a);
+      document.body.append(rc);
     </script>
   </body>
 </html>
