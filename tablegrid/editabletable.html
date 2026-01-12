@@ -22,6 +22,12 @@
   </head>
   <body>
     <script>
+      if (location.search) {
+        let p = new URLSearchParams(location.search);
+        if (p.has('w')) w = parseInt(p.get('w'));
+        if (p.has('h')) h = parseInt(p.get('h'));
+        if (p.has('f')) w = parseInt(p.get('f'));
+      }
       if (f) {
         document.styleSheets[0].insertRule(`* { font-size: ${f}px}`);
       }
@@ -62,6 +68,22 @@
           r.append(c);
         });
         w++;
+      });
+      document.body.append(a);
+
+      let n = document.createElement('button');
+      n.innerText = '- row';
+      n.addEventListener('click', () => {
+        b.lastChild.remove();
+        h--;
+      });
+      document.body.append(n);
+
+      let a = document.createElement('button');
+      a.innerText = '- col';
+      a.addEventListener('click', () => {
+        Array.from(b.children).forEach(r => r.lastChild.remove());
+        w--;
       });
       document.body.append(a);
     </script>
