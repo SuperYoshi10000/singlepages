@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      let w=12, h=12;
+      let f=20;
+    </script>
+    <style>
+      * {
+        font-family: monospace;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        padding: 0.5em;
+        min-width: 1em;
+        min-height: 1em;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      if (f) {
+        document.styleSheets[0].insertRule(`* { font-size: ${f}px}`);
+      }
+      let t = document.createElement('table');
+      document.body.append(t);
+      let b = document.createElement('tbody');
+      t.append(b);
+      for (let y = 0; y < h; y++) {
+        let r = document.createElement('tr');
+        for (let x = 0; x < w; x++) {
+          let c = document.createElement('td');
+          c.contentEditable = true;
+          r.append(c);
+        }
+        b.append(r);
+        let a = document.createElement('button');
+        a.innerText = '+';
+        a.addEventListener('click', () => {
+          let c = document.createElement('td');
+          c.contentEditable = true;
+          a.before(c);
+        });
+        r.append(a);
+      }
+      let n = ducument.createElement('button');
+      n.innerText = '+';
+      n.addEventListener('click', () => {
+        let r = document.createElement('tr');
+        for (let x = 0; x < w; x++) {
+          let c = document.createElement('td');
+          c.contentEditable = true;
+          r.append(c);
+        }
+        n.before(r);
+      });
+      b.append(n);
+    </script>
+  </body>
+</html>
