@@ -26,7 +26,7 @@
         let p = new URLSearchParams(location.search);
         if (p.has('w')) w = parseInt(p.get('w'));
         if (p.has('h')) h = parseInt(p.get('h'));
-        if (p.has('f')) w = parseInt(p.get('f'));
+        if (p.has('f')) f = parseInt(p.get('f'));
       }
       if (f) {
         document.styleSheets[0].insertRule(`* { font-size: ${f}px}`);
