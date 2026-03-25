@@ -1,8 +1,31 @@
 <pre id="log"></pre>
 <script>
   let log = document.getElementById("log");
-  window.addEventListener("click", e => log.append(`${e}`, '\n'));
-  
+  // Mouse events
+  window.addEventListener("click", logMouseEvent);
+  window.addEventListener("dblclick", logMouseEvent);
+  window.addEventListener("contextmenu", logMouseEvent);
+  window.addEventListener("mousedown", logMouseEvent);
+  window.addEventListener("mouseup", logMouseEvent);
+  // window.addEventListener("pointerdown", logMouseEvent);
+  // window.addEventListener("pointerup", logMouseEvent);
+  // Keyboard events
+  window.addEventListener("keydown", logKeyEvent);
+  window.addEventListener("keyup", logKeyEvent);
+  // window.addEventListener("keypress", logKeyEvent);
+
+  const MOUSE_BUTTONS = ['Left', 'Middle', 'Right', 'Back', 'Forward'];
+  function logMouseEvent(e) {
+    let str = `${e.constructor.name} ${e.type} (${e.clientX}, ${e.clientY}) Button: ${e.button} (${MOUSE_BUTTONS[e.button]})`;
+    if (e instanceof PointerEvent) {
+      str += ` PointerType: ${e.pointerType}`;
+    }
+    log.append(str, '\n');
+  }
+  function logKeyEvent(e) {
+    let str = `${e.constructor.name} ${e.type} Key: ${e.key} Code: ${e.code}`;
+    log.append(str, '\n');
+  }
 </script>
 <style>
   .log {
