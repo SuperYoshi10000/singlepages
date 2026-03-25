@@ -1,5 +1,11 @@
 <pre id="log"></pre>
 <script>
   let log = document.getElementById("log");
-  window.addEventListener("click", e => log.append(e.toString()));
+  window.addEventListener("click", e => log.append(`${e}`, '\n'));
+  
 </script>
+<style>
+  .log {
+    /* white-space: pre-wrap; */
+  }
+</style>
