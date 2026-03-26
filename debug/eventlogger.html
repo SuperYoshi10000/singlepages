@@ -2,33 +2,86 @@
 <script>
   let log = document.getElementById("log");
   // Mouse events
-  window.addEventListener("click", logMouseEvent);
-  window.addEventListener("dblclick", logMouseEvent);
-  window.addEventListener("contextmenu", logMouseEvent);
-  window.addEventListener("mousedown", logMouseEvent);
-  window.addEventListener("mouseup", logMouseEvent);
+  window.addEventListener("click", e => trycatch(logMouseEvent, [e]));
+  window.addEventListener("dblclick", e => trycatch(logMouseEvent, [e]));
+  window.addEventListener("contextmenu", e => trycatch(logMouseEvent, [e]));
+  window.addEventListener("pointerdown", e => trycatch(logMouseEvent, [e]));
+  window.addEventListener("pointerup", e => trycatch(logMouseEvent, [e]));
+  window.addEventListener("pointermove", e => trycatch(logMouseEvent, [e]));
+  window.addEventListener("pointerenter", e => trycatch(logMouseEvent, [e]));
+  window.addEventListener("pointerleave", e => trycatch(logMouseEvent, [e]));
+
+  window.addEventListener("wheel", e => {
+    let str = `${e?.constructor.name} ${e.type} (${e.clientX}, ${e.clientY}) Delta: (${e.deltaX}, ${e.deltaY}, ${e.deltaZ})`;
+    str = addModifiers(str, e);
+    log.append(str, '\n');
+  });
   // window.addEventListener("pointerdown", logMouseEvent);
   // window.addEventListener("pointerup", logMouseEvent);
   // Keyboard events
-  window.addEventListener("keydown", logKeyEvent);
-  window.addEventListener("keyup", logKeyEvent);
+  window.addEventListener("keydown", e => trycatch(logKeyEvent, [e]));
+  window.addEventListener("keyup", e => trycatch(logKeyEvent, [e]));
   // window.addEventListener("keypress", logKeyEvent);
 
+  window.addEventListener("focus", e => trycatch(logWindowEvent, [e]));
+  window.addEventListener("blur", e => trycatch(logWindowEvent, [e]));
+  window.addEventListener("load", e => trycatch(logWindowEvent, [e]));
+  window.addEventListener("DOMContentLoaded", e => trycatch(logWindowEvent, [e]));
+  window.addEventListener("resize", e => trycatch(logWindowEvent, [e]));
+
+
+  function logEvent(e) {
+    let str = `${e?.constructor.name} ${e.type}`;
+    log.append(str, '\n');
+  }
+  function logWindowEvent(e) {
+    let str = `${e?.constructor.name} ${e.type} - Position: (${window.screenLeft}, ${window.screenTop}) Size: ${window.innerWidth}x${window.innerHeight}`;
+    log.append(str, '\n');
+  }
   const MOUSE_BUTTONS = ['Left', 'Middle', 'Right', 'Back', 'Forward'];
   function logMouseEvent(e) {
-    let str = `${e.constructor.name} ${e.type} (${e.clientX}, ${e.clientY}) Button: ${e.button} (${MOUSE_BUTTONS[e.button]})`;
+    let str = `${e?.constructor.name} ${e.type} - (${roundAndTruncate(e.clientX)}, ${roundAndTruncate(e.clientY)}) Button: ${e.button} (${MOUSE_BUTTONS[e.button]}) Movement: (${roundAndTruncate(e.movementX)}, ${roundAndTruncate(e.movementY)})`;
+    str = addModifiers(str, e);
     if (e instanceof PointerEvent) {
-      str += ` PointerType: ${e.pointerType}`;
+      str += `\n\tPointerType: ${e.pointerType} ID: ${e.persistentDeviceId} #${e.pointerId}${e.isPrimary ? ' (Primary)' : ''}`;
+      str += `\n\tPressure: ${roundAndTruncate(e.pressure, 0.001)} Tilt: (${roundAndTruncate(e.tiltX, 0.001)}, ${roundAndTruncate(e.tiltY, 0.001)}) Twist: ${roundAndTruncate(e.twist, 0.001)}° TangentialPressure: ${roundAndTruncate(e.tangentialPressure, 0.001)} Size: ${roundAndTruncate(e.width, 0.1)}x${roundAndTruncate(e.height, 0.1)} AzimuthAngle: ${roundAndTruncate(e.azimuthAngle, 0.001)} AltitudeAngle: ${roundAndTruncate(e.altitudeAngle, 0.001)}`;
     }
     log.append(str, '\n');
   }
   function logKeyEvent(e) {
-    let str = `${e.constructor.name} ${e.type} Key: ${e.key} Code: ${e.code}`;
+    let str = `${e?.constructor.name} ${e.type} - Key: ${e.key} Code: ${e.keyCode} (${e.code})`;
+    let others = [];
+    str = addModifiers(str, e);
     log.append(str, '\n');
+  }
+  function addModifiers(str, e) {
+    let others = [];
+    if (e.altKey) others.push('Alt');
+    if (e.ctrlKey) others.push('Ctrl');
+    if (e.shiftKey) others.push('Shift');
+    if (e.metaKey) others.push('Meta');
+    if (others.length > 0) str += ` Modifiers: ${others.join('+')}`;
+    return str;
+  }
+  function roundAndTruncate(num, step = 1) {
+    return Number((Math.round(num / step) * step).toFixed(3));
+  }
+  function trycatch(t = () => {}, a = [], c = logError) {
+    try {
+      t(...a);
+    } catch (e) {
+      c(e);
+    }
+  }
+  function logError(e) {
+    log.append(e.toString(), '\n');
   }
 </script>
 <style>
-  .log {
-    /* white-space: pre-wrap; */
+  #log {
+    position: fixed;
+    bottom: 0;
+    /* min-height: 100vh;
+    width: 100vw; */
   }
 </style>
