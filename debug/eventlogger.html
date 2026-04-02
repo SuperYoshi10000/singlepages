@@ -40,6 +40,7 @@
   }
   const MOUSE_BUTTONS = ['Left', 'Middle', 'Right', 'Back', 'Forward'];
   function logMouseEvent(e) {
+    if (e.button !== 0) e.preventDefault();
     let str = `${e?.constructor.name} ${e.type} - (${roundAndTruncate(e.clientX)}, ${roundAndTruncate(e.clientY)}) Button: ${e.button} (${MOUSE_BUTTONS[e.button]}) Movement: (${roundAndTruncate(e.movementX)}, ${roundAndTruncate(e.movementY)})`;
     str = addModifiers(str, e);
     if (e instanceof PointerEvent) {
@@ -49,6 +50,7 @@
     log.append(str, '\n');
   }
   function logKeyEvent(e) {
+    // if (e.)
     let str = `${e?.constructor.name} ${e.type} - Key: ${e.key} Code: ${e.keyCode} (${e.code})`;
     let others = [];
     str = addModifiers(str, e);
